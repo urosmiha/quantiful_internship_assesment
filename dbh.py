@@ -20,13 +20,6 @@ def dbSetup(conn):
     # print(feedback)
     conn.commit()
 
-def addTestData(conn):
-    c= conn.cursor()
-    c.execute("""INSERT INTO stock_data (DATE, STOCK, OPEN, HIGH, LOW, CLOSE_VALUE, VOLUME)
-                VALUES ('2018-01-18','AAPL', 1546.6900, 1548.0000, 1503.4100, 1517.8600, 4465424);""")
-    conn.commit()
-    # print(feedback)
-
 def addData(conn, ot_date, stock, opens, high, low, close, volume):
 
     c= conn.cursor()

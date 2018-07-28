@@ -10,11 +10,9 @@ conn = setupConnetion()
 # Create database and table if not existent
 dbSetup(conn)
 
-addTestData(conn)
-
 # get 10 years ago date
 oldest_date = getTenYearsAgoDate()
-print ('Oldest data date: ', oldest_date)
+print ('Retriving data from', oldest_date, 'till now')
 
 token = '3IAFG5IWH0P5UW5G'
 nsdaqs = ['AAPL', 'GOOGL', 'AMZN']      # NASDAQ identifier
@@ -22,12 +20,13 @@ main_url = 'https://www.alphavantage.co/query?'
 
 function = 'function=TIME_SERIES_DAILY'     
 pre_symbol = 'symbol='                      # different NSDAQ numbers will be added to this later
-out_size = 'outputsize=compact'            # full is last 20 years
+out_size = 'outputsize=full'            # full is last 20 years
 datatype = 'datatype=json'      
 api_key = 'apikey=' + token
 
 # For each stock (nsdaq) get data and update database
 for stock in nsdaqs:
+    print("Adding", stock, "...")
     # Format URL
     symbol = pre_symbol + stock
     url = main_url + '&' + function + '&' + symbol + '&' + out_size + '&' + datatype + '&' + api_key
@@ -52,23 +51,23 @@ for stock in nsdaqs:
         for dataset in response_data.items():
             # print(dataset)
             date = dataset[date_id]
-            ot_date = datetime.strptime(date, '%Y-%M-%d').date()    #convert string to datetime object
-            # print(ot_date)
-
+            ot_date = datetime.strptime(date, '%Y-%m-%d').date()    #convert string to datetime object
+            print(ot_date)    #  you can COMMENT this line if you do not want to see all the dates we are accessing
+            
             # Only use data that is not older than 10 year
-            if(ot_date > oldest_date):
+            if ot_date < oldest_date:
+                break
+            else:
                 opens = dataset[data_id]['1. open']
                 high = dataset[data_id]['2. high']
                 low = dataset[data_id]['3. low']
                 close = dataset[data_id]['4. close']
                 volume = dataset[data_id]['5. volume']
 
-                addData(conn, ot_date, stock, opens, high, low, close, volume)
+                addData(conn, date, stock, opens, high, low, close, volume)
 
-                # addData(conn, ot_date, stock, opens, high, low, close, volume)
-                # print(stock, feedback)
-                # print('-----------------------------')
         
+print("Finished") 
 conn.close()    #close connection when finished
     
 
