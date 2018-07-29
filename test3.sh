@@ -5,16 +5,16 @@ if [ ! -d data ]; then #
     mkdir -p data; #
 fi #
 # Fetch new data if the csv files do not exist #
-if [ ! -d data/apple.csv ] | [ ! -d data/alphabet.csv ] | [ ! -d data/amazon.csv ]; then #
-    echo "Fetching data..." #
-    URL="https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=AAPL&apikey=3IAFG5IWH0P5UW5G&outputsize=full&datatype=csv" #
-    curl -k --request GET $URL > data/apple.csv #
-    URL="https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=GOOGL&apikey=3IAFG5IWH0P5UW5G&outputsize=full&datatype=csv" #
-    curl -k --request GET $URL > data/alphabet.csv #
-    URL="https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=AMZN&apikey=3IAFG5IWH0P5UW5G&outputsize=full&datatype=csv" #
-    curl -k --request GET $URL > data/amazon.csv #
-    echo "Done" #
-fi #
+# if [ ! -d data/apple.csv ] | [ ! -d data/alphabet.csv ] | [ ! -d data/amazon.csv ]; then #
+echo "Fetching data..." #
+URL="https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=AAPL&apikey=3IAFG5IWH0P5UW5G&outputsize=full&datatype=csv" #
+curl -k --request GET $URL > data/apple.csv #
+URL="https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=GOOGL&apikey=3IAFG5IWH0P5UW5G&outputsize=full&datatype=csv" #
+curl -k --request GET $URL > data/alphabet.csv #
+URL="https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=AMZN&apikey=3IAFG5IWH0P5UW5G&outputsize=full&datatype=csv" #
+curl -k --request GET $URL > data/amazon.csv #
+echo "Done" #
+#fi #
 # Insety data from the csv files into db for the specified date, stocks and csv file #
 function insertdata() { #
     DATE="$1" #
