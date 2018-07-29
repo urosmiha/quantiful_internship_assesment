@@ -73,4 +73,46 @@ ________________________________________________________________________________
 
 __End of Question 2__
 ____________________________________________________________________________________________________
+# Question 3
+### Pre-requirements:
+- curl tool
+  - In case you need to install it run _sudo apt install curl_
+- SQLite3
+  - If you need to install it run _sudo apt-get install sqlite3 libsqlite3-dev_ (for ubuntu 14+)
+### Necessary Files
+- _test3.sh_ - all the code is in this file
+- _test2_db.db_ from the previous task. But it is not neccessery for the script to work as the script will create test2_db.db if it does not exist.
+## How does the code work
+- APIs stayed the same: https://www.alphavantage.co/documentation/#daily
+- The 3 APIs are hard coded to get the daily values for the full data (i.e. last 20 years) but this time not as JSON but as CSV, and this data is stored in a 3 separate files in _data_ directory:
+  - _apple.csv_
+  - _alphabet.csv_
+  - _amazon.csv_
+- This is executed everytime the scripts is run so that the latest data is always available in the files.
+- Once the user specifies the date they want the data for each stock (i.e. Apple, Alphabet, Amazon) is fetched from the csv files and imported to database.
+## Accessing csv files
+- Command use to access csv data:
+  - __cat__ opens the file
+  - __grep__ gets the row with the specified patters (in this case user specified date)
+  - __awk__ gets the column for each value (i.e. OPEN, CLOSE, HIGH, LOW, VOLUME)
+- The columns:
+  - $1 - DATE
+  - $2 - OPEN
+  - $3 - HIGH
+  - $4 - LOW
+  - $5 - CLOSE_VALUE
+  - $6 - VOLUME
+- Data is fetced for each column and then stored in a table
+## Executing the script
+- In terminal type:
+  - chmod +x test3.sh
+  - ./test3.sh
+- There should be some messages diplayed on the terminal and a progress bar.
+- After that you will be created with message and asked to enter a data in a specified format.
+- Please use this format as script won't work otherwise since I do not have a mechanism for filtering the bad input (yet).
+- If you do enter the wrong thing something might get fatched and stored in a database as I am using pattern finding for __grep__ command, or you will just get an error from the sqlite.
+- To terminate the  script enter __q__ or _ctrl_+_c_
+__End of Question 3__
+_________________________________________________________________________________________________________________
+by Uros Mihajlovic
 
